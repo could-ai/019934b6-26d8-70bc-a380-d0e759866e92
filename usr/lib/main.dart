@@ -1,4 +1,11 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:couldai_user_app/theme/colors.dart';
+import 'package:couldai_user_app/widgets/glassmorphism.dart';
+import 'package:couldai_user_app/widgets/score_card.dart';
+import 'package:couldai_user_app/widgets/team_logo.dart';
+import 'package:couldai_user_app/models/game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,114 +14,180 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Live Sports Game',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: AppColors.primaryColor,
+        textTheme: GoogleFonts.orbitronTextTheme(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomePageState extends State<HomePage> {
+  final List<Game> _games = [
+    Game(
+      team1: 'CYBER DRAGONS',
+      team2: 'VOID RUNNERS',
+      logo1: 'https://firebasestorage.googleapis.com/v0/b/story-squad.appspot.com/o/dragon.png?alt=media&token=3857912d-72b2-4455-a075-4b353c44e99f',
+      logo2: 'https://firebasestorage.googleapis.com/v0/b/story-squad.appspot.com/o/runner.png?alt=media&token=894b397c-1652-4e4f-a74b-8129524f5a3b',
+      score1: 102,
+      score2: 98,
+      time: "Q4 02:30",
+    ),
+    Game(
+      team1: 'GALAXY GLADIATORS',
+      team2: 'NEBULA NINJAS',
+      logo1: 'https://firebasestorage.googleapis.com/v0/b/story-squad.appspot.com/o/gladiator.png?alt=media&token=1b84e363-3e38-425b-9870-1da545c1114b',
+      logo2: 'https://firebasestorage.googleapis.com/v0/b/story-squad.appspot.com/o/ninja.png?alt=media&token=a32f52ff-01e4-41b1-995b-78a0133b503d',
+      score1: 88,
+      score2: 95,
+      time: "Q3 08:15",
+    ),
+  ];
 
-  void _incrementCounter() {
+  void _updateScores() {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      for (var game in _games) {
+        game.score1 += Random().nextInt(5);
+        game.score2 += Random().nextInt(5);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'LIVE GAMES',
+          style: GoogleFonts.orbitron(
+            fontWeight: FontWeight.bold,
+            color: AppColors.textColor,
+          ),
+        ),
+        centerTitle: true,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text('$_counter', style: Theme.of(context).textTheme.headlineMedium),
+      body: ListView.builder(
+        itemCount: _games.length,
+        itemBuilder: (context, index) {
+          return GameCard(game: _games[index]);
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _updateScores,
+        backgroundColor: AppColors.accentColor,
+        child: const Icon(Icons.refresh),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const CustomBottomNavBar(),
+    );
+  }
+}
+
+class GameCard extends StatelessWidget {
+  final Game game;
+
+  const GameCard({super.key, required this.game});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Glassmorphism(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TeamLogo(logoUrl: game.logo1),
+                  Text(
+                    'VS',
+                    style: GoogleFonts.orbitron(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.accentColor,
+                    ),
+                  ),
+                  TeamLogo(logoUrl: game.logo2),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  ScoreCard(score: '${game.score1}', teamName: game.team1),
+                  ScoreCard(score: '${game.score2}', teamName: game.team2),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Text(
+                game.time,
+                style: GoogleFonts.openSans(
+                  fontSize: 16,
+                  color: AppColors.textColor.withOpacity(0.7),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomBottomNavBar extends StatelessWidget {
+  const CustomBottomNavBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Glassmorphism(
+      borderRadius: const BorderRadius.only(
+        topLeft: Radius.circular(24),
+        topRight: Radius.circular(24),
+      ),
+      child: BottomAppBar(
+        color: Colors.transparent,
+        elevation: 0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.home, color: AppColors.textColor),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.bar_chart, color: AppColors.textColor),
+              onPressed: () {},
+            ),
+            const SizedBox(width: 40),
+            IconButton(
+              icon: const Icon(Icons.person, color: AppColors.textColor),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.settings, color: AppColors.textColor),
+              onPressed: () {},
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
